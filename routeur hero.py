@@ -20,7 +20,8 @@ textpos = text.get_rect()
 textpos.centerx = background.get_rect().centerx
 background.blit(text, textpos)
 
-
+font2 = pygame.font.Font(None, 50)
+text2 = font2.render("perdu le noyaux est detruit", 1, (250 ,0, 0))
 
 # Chargement de l'image
 image = pygame.image.load("flare.png").convert()
@@ -40,8 +41,8 @@ pygame.display.flip()
 
 
 
-
-vitesse=0.5
+noyaux=True
+vitesse=0.25
 y=0
 vitesse2=0.5
 y2=700
@@ -53,15 +54,16 @@ y4=505
 x5=300
 y5=505
 dg=False
+dm=False
 dd=False
 nb=0
-limit=2
+limit=1
 condif1=False
 condif2=False
 condif3=False
-yf1=y
-yf2=y
-yf3=y
+yf1=-50
+yf2=-50
+yf3=-50
 
 # Boucle principale
 clock = pygame.time.Clock()
@@ -74,6 +76,7 @@ while continuer:
 
     x3,y3=mouse_pos = pygame.mouse.get_pos()
     screen.blit(background, (0, 0))
+    
     
     #pour routeur et convoyeur
     
@@ -107,103 +110,116 @@ while continuer:
     screen.blit(rotated_convoyeur2, (268 , 596))
     screen.blit(rotated_convoyeur2, (268 , 628))
     
+    #sert a fair avancer premier cuivre
+    if noyaux ==True:
+        if x2==275 and y2 >532:
+            screen.blit(resized_coper, (x2 , y2))
+            y2-=vitesse2
+        else:
+            y2=700
+            x2=275
+        #determine de quelle coter est la souri
+            if x3<250:
+                d=True
+            if x3>350:
+                f=True
 
-    if x2==275 and y2 >532:
-        screen.blit(resized_coper, (x2 , y2))
-        y2-=vitesse2
-    else:
-        y2=700
-        x2=275
-        if x3<250:
-            d=True
-        if x3>350:
-            f=True
+        #afiche le cuivre qui vas a gauche 
+        if d==True:
+            x4-=vitesse2
+            screen.blit(resized_coper, (x4 , y4))
+            if x4<82:
+                x4=250
+                y4=505
+                dg=True
+                d=False
         
-    if d==True:
-        x4-=vitesse2
-        screen.blit(resized_coper, (x4 , y4))
-        if x4<82:
-            x4=250
-            y4=505
-            dg=True
-            d=False
-        
-    if f==True:
-        x5+=vitesse2
-        screen.blit(resized_coper, (x5 , y5))
-        if x5>465:
-            x5=300
-            y5=505
-            dd=True
-            f=False
-    else:
-        dm=True
+        #afiche le cuivre qui vas a droite
+        elif f==True:
+            x5+=vitesse2
+            screen.blit(resized_coper, (x5 , y5))
+            if x5>465:
+                x5=300
+                y5=505
+                dd=True
+                f=False
+        #active le duo du milieu
+        elif x3>250 and x3<350:
+            dm=True
 
 
   
             
-    #generation flare
-    if nb < limit:
-        pif=randint(1,3)
-        if pif ==1 and condif1 !=True :
-            condif1=True
-            nb+=1
-            
-        elif pif ==2 and condif2 !=True:
-            condif2=True
-            nb+=1
-            
-        else:
-            if condif3 !=True:
-                condif3=True
+    #generation flare (decide dans quelle colone vons les flare et le nombre qu'ils sont)
+        if nb < limit:
+            pif=randint(1,3)
+            if pif ==1 and condif1 !=True:
+                condif1=True
                 nb+=1
+            
+            elif pif ==2 and condif2 !=True:
+                condif2=True
+                nb+=1
+            
+            elif pif ==3 :
+                if condif3 !=True:
+                    condif3=True
+                    nb+=1
                 
 
     
 
-    #afichage et avancement flare
-    if condif1 == True:
-        yf1+=vitesse
-        screen.blit(rotated_flare, (45, yf1))
-    else:
-        yf1=-50
+        #afichage et avancement flare
+        if condif1 == True:
+            yf1+=vitesse
+            screen.blit(rotated_flare, (45, yf1))
+        else:
+            yf1=-50
 
-    if condif2 == True:
-        yf2+=vitesse
-        screen.blit(rotated_flare, (260 , yf2))
-    else:
-        yf2=-50
+        if condif2 == True:
+            yf2+=vitesse
+            screen.blit(rotated_flare, (260 , yf2))
+        else:
+            yf2=-50
 
 
-    if condif3 == True:
-        yf3+=vitesse
-        screen.blit(rotated_flare, (450 , yf3))
-    else:
-        yf3=-50
+        if condif3 == True:
+            yf3+=vitesse
+            screen.blit(rotated_flare, (450 , yf3))
+        else:
+            yf3=-50
     
 
 
-    #sisteme de tir
-    if dg==True:
-        screen.blit(resized_fume, (50 , 500))
-        screen.blit(resized_boom, (45, yf1))
-        condif1=False
-        nb-=1
-        dg=False
+        #sisteme de tir
+        if dg==True:
+            screen.blit(resized_fume, (50 , 500))
+            screen.blit(resized_boom, (45, yf1))
+            condif1=False
+            nb-=1
+            dg=False
     
-    if dm==True:
-        screen.blit(resized_fume, (270 , 448))
-        screen.blit(resized_boom, (260, yf2))
-        condif2=False
-        nb-=1
-        dm=False
+        if dm==True :
+            screen.blit(resized_fume, (270 , 448))
+            screen.blit(resized_boom, (260, yf2))
+            condif2=False
+            nb-=1
+            dm=False
 
-    if dd == True:
-        screen.blit(resized_fume, (485 , 500))
-        screen.blit(resized_boom, (450, yf3))
-        condif3=False
-        nb-=1
-        dd=False
+        if dd == True:
+            screen.blit(resized_fume, (485 , 500))
+            screen.blit(resized_boom, (450, yf3))
+            condif3=False
+            nb-=1
+            dd=False
+
+        #gere la fin du jeux
+        if yf1>500 or yf2>500 or yf3>500:
+            limit=-1000
+            noyaux=False
+            background.blit(text2, (50,300))
+            noyaux=False
+
 
 
 
