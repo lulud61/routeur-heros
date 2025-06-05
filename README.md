@@ -1,12 +1,20 @@
-this is an project for an event in the frenche mindustry serveur.
-you are playing an routeur who give coper to duo for kill flare.
-made with python and with pygame import and random import.
-thanks to @Bert who helping to comit D:
-good luck to save the core 
+# Routeur Heros
 
-:)
+This is a python project for an event in the [French Mindustry Discord](https://discord.com/invite/hzGPWhZSGV).
+You are playing a router whose goal is to distribute copper to duo turrets to kill the incoming flares.
 
-juste clone the repository and instale pygame import.
-and run it.
+Good luck saving the core!
 
-i maybe made an score sistem later.
+## Installation
+1. clone the repository
+2. install the dependencies
+3. run `routeur_hero.py` using python
+
+## Dependencies
+- [pygame](https://www.pygame.org/news)
+
+## Future additions
+I might add a scoring system later
+
+## Thanks
+thanks to @MxPerrot who taught me how to use git
