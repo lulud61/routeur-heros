@@ -61,6 +61,8 @@ condif2=False
 condif3=False
 
 score=0
+#permet de choisir la proba que la dificulter augmente. ne pas metre =<1  ou trop elever 3 ou 5 c'est bien
+probavaugment=3
 
 acuvitesse=0
 vitesseflare=0.25+acuvitesse
@@ -223,7 +225,7 @@ while continuer:
             condif1=False
             nb-=1
             score+=1
-            paf=randint(1,5)
+            paf=randint(1,probavaugment)
             if paf ==2:
                 acuvitesse+=0.5
                 paf=-555
@@ -235,6 +237,7 @@ while continuer:
             condif2=False
             nb-=1
             score+=1
+            paf=randint(1,probavaugment)
             if paf ==2:
                 acuvitesse+=0.5
                 paf=-555
@@ -246,6 +249,7 @@ while continuer:
             condif3=False
             nb-=1
             score+=1
+            paf=randint(1,probavaugment)
             if paf ==2:
                 acuvitesse+=0.5
                 paf=-555
@@ -261,7 +265,7 @@ while continuer:
     
     
     
-
+    
 
 
     #rien apres sa
