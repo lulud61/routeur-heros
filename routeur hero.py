@@ -6,6 +6,7 @@ pygame.init()
 screen = pygame.display.set_mode((600, 600))
 pygame.display.set_caption('routeur heros')
 
+score=0
 
 # Fond
 background = pygame.Surface(screen.get_size())
@@ -19,9 +20,9 @@ text = font.render("routeur heros", 1, (0, 0, 0))
 textpos = text.get_rect()
 textpos.centerx = background.get_rect().centerx
 background.blit(text, textpos)
-
 font2 = pygame.font.Font(None, 50)
 text2 = font2.render("perdu le noyaux est detruit", 1, (250 ,0, 0))
+
 
 # Chargement de l'image
 image = pygame.image.load("flare.png").convert()
@@ -31,6 +32,15 @@ imageduo = pygame.image.load("duo.png").convert()
 imagecoper = pygame.image.load("item-copper.png").convert()
 imageboom = pygame.image.load("boom.png").convert()
 imagefume = pygame.image.load("fume.png").convert()
+
+resized_coper = pygame.transform.scale(imagecoper, (20, 20))
+resized_duo = pygame.transform.scale(imageduo, (32, 32))
+rotated_flare = pygame.transform.rotate(image, 180)
+resized_fume=pygame.transform.scale(imagefume, (30,30))
+resized_boom=pygame.transform.scale(imageboom, (40,40))
+
+
+
 
 
 # Affichage initial
@@ -57,7 +67,7 @@ dg=False
 dm=False
 dd=False
 nb=0
-limit=1
+limit=2
 condif1=False
 condif2=False
 condif3=False
@@ -77,16 +87,14 @@ while continuer:
     x3,y3=mouse_pos = pygame.mouse.get_pos()
     screen.blit(background, (0, 0))
     
-    
-    #pour routeur et convoyeur
-    
-    resized_coper = pygame.transform.scale(imagecoper, (20, 20))
-    resized_duo = pygame.transform.scale(imageduo, (32, 32))
-    rotated_flare = pygame.transform.rotate(image, 180)
-    resized_fume=pygame.transform.scale(imagefume, (30,30))
-    resized_boom=pygame.transform.scale(imageboom, (40,40))
+    #pour score
+    font3 = pygame.font.Font(None, 30)
+    text3 = font3.render(f"score: {score} ", 1, (0 ,0, 0))
+    screen.blit(text3, (10,10))
 
 
+    #pour aficher routeur et convoyeur
+    
     screen.blit(resized_duo, (266 , 470))
     screen.blit(imagerouteur, (268 , 500))
     screen.blit(imageconvoyeur, (300 , 500))
@@ -148,9 +156,15 @@ while continuer:
             dm=True
 
 
-  
+        #regle bug de non limite des flare
+        if nb<0:
+            nb=limit
+        elif nb>limit:
+            nb=limit
+
+
             
-    #generation flare (decide dans quelle colone vons les flare et le nombre qu'ils sont)
+        #generation flare (decide dans quelle colone vons les flare et le nombre qu'ils sont)
         if nb < limit:
             pif=randint(1,3)
             if pif ==1 and condif1 !=True:
@@ -165,7 +179,7 @@ while continuer:
                 if condif3 !=True:
                     condif3=True
                     nb+=1
-                
+    
 
     
 
@@ -175,54 +189,55 @@ while continuer:
             screen.blit(rotated_flare, (45, yf1))
         else:
             yf1=-50
+            score+=1
 
         if condif2 == True:
             yf2+=vitesse
             screen.blit(rotated_flare, (260 , yf2))
         else:
             yf2=-50
-
+            score+=1
 
         if condif3 == True:
             yf3+=vitesse
             screen.blit(rotated_flare, (450 , yf3))
         else:
             yf3=-50
-    
+            score+=1
 
 
         #sisteme de tir
-        if dg==True:
+        if dg==True and condif1==True:
             screen.blit(resized_fume, (50 , 500))
             screen.blit(resized_boom, (45, yf1))
             condif1=False
             nb-=1
             dg=False
     
-        if dm==True :
+        if dm==True and condif2==True:
             screen.blit(resized_fume, (270 , 448))
             screen.blit(resized_boom, (260, yf2))
             condif2=False
             nb-=1
             dm=False
 
-        if dd == True:
+        if dd == True  and condif3==True:
             screen.blit(resized_fume, (485 , 500))
             screen.blit(resized_boom, (450, yf3))
             condif3=False
             nb-=1
             dd=False
 
-        #gere la fin du jeux
-        if yf1>500 or yf2>500 or yf3>500:
-            limit=-1000
-            noyaux=False
-            background.blit(text2, (50,300))
-            noyaux=False
+    #gere la fin du jeux
+    if yf1>500 or yf2>500 or yf3>500:
+        limit=-1000
+        noyaux=False
+        background.blit(text2, (50,300))
+        noyaux=False
 
-
-
-
+    
+    
+    
 
 
 
