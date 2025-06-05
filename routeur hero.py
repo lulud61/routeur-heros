@@ -6,7 +6,7 @@ pygame.init()
 screen = pygame.display.set_mode((600, 600))
 pygame.display.set_caption('routeur heros')
 
-score=0
+
 
 # Fond
 background = pygame.Surface(screen.get_size())
@@ -50,27 +50,37 @@ pygame.display.flip()
 
 
 
-
 noyaux=True
-vitesse=0.25
-y=0
-vitesse2=0.5
-y2=700
-x2=275
+g=False
 d=False
-f=False
-x4=250
-y4=505
-x5=300
-y5=505
 dg=False
 dm=False
 dd=False
-nb=0
-limit=2
 condif1=False
 condif2=False
 condif3=False
+
+score=0
+
+acuvitesse=0
+vitesseflare=0.25+acuvitesse
+vitessetapis=0.5+acuvitesse
+
+y2=700
+x2=275
+
+x4=250
+y4=505
+
+
+x5=300
+y5=505
+
+#genere les flare
+nb=0
+limit=2
+
+#position des flare
 yf1=-50
 yf2=-50
 yf3=-50
@@ -122,35 +132,35 @@ while continuer:
     if noyaux ==True:
         if x2==275 and y2 >532:
             screen.blit(resized_coper, (x2 , y2))
-            y2-=vitesse2
+            y2-=vitessetapis
         else:
             y2=700
             x2=275
         #determine de quelle coter est la souri
             if x3<250:
-                d=True
+                g=True
             if x3>350:
-                f=True
+                d=True
 
         #afiche le cuivre qui vas a gauche 
-        if d==True:
-            x4-=vitesse2
+        if g==True:
+            x4-=vitessetapis
             screen.blit(resized_coper, (x4 , y4))
             if x4<82:
                 x4=250
                 y4=505
                 dg=True
-                d=False
+                g=False
         
         #afiche le cuivre qui vas a droite
-        elif f==True:
-            x5+=vitesse2
+        elif d==True:
+            x5+=vitessetapis
             screen.blit(resized_coper, (x5 , y5))
             if x5>465:
                 x5=300
                 y5=505
                 dd=True
-                f=False
+                d=False
         #active le duo du milieu
         elif x3>250 and x3<350:
             dm=True
@@ -185,33 +195,38 @@ while continuer:
 
         #afichage et avancement flare
         if condif1 == True:
-            yf1+=vitesse
+            yf1+=vitesseflare
             screen.blit(rotated_flare, (45, yf1))
         else:
             yf1=-50
-            score+=1
+            
 
         if condif2 == True:
-            yf2+=vitesse
+            yf2+=vitesseflare
             screen.blit(rotated_flare, (260 , yf2))
         else:
             yf2=-50
-            score+=1
+            
 
         if condif3 == True:
-            yf3+=vitesse
+            yf3+=vitesseflare
             screen.blit(rotated_flare, (450 , yf3))
         else:
             yf3=-50
-            score+=1
+            
 
 
         #sisteme de tir
         if dg==True and condif1==True:
-            screen.blit(resized_fume, (50 , 500))
+            screen.blit(resized_fume, (50 , 469))
             screen.blit(resized_boom, (45, yf1))
             condif1=False
             nb-=1
+            score+=1
+            paf=randint(1,5)
+            if paf ==2:
+                acuvitesse+=0.5
+                paf=-555
             dg=False
     
         if dm==True and condif2==True:
@@ -219,13 +234,21 @@ while continuer:
             screen.blit(resized_boom, (260, yf2))
             condif2=False
             nb-=1
+            score+=1
+            if paf ==2:
+                acuvitesse+=0.5
+                paf=-555
             dm=False
 
         if dd == True  and condif3==True:
-            screen.blit(resized_fume, (485 , 500))
+            screen.blit(resized_fume, (485 , 469))
             screen.blit(resized_boom, (450, yf3))
             condif3=False
             nb-=1
+            score+=1
+            if paf ==2:
+                acuvitesse+=0.5
+                paf=-555
             dd=False
 
     #gere la fin du jeux

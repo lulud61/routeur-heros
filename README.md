@@ -14,7 +14,8 @@ Good luck saving the core!
 - [pygame](https://www.pygame.org/news)
 
 ## Future additions
-I might add a scoring system later
+why not for some upgrade
+
 
 ## Thanks
 thanks to @MxPerrot who taught me how to use git
